@@ -6,8 +6,31 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
+/**
+ * @OA\Info(
+ *      version="1.0.0",
+ *      title="LyfPlus API Documentation",
+ *      description="API documentation for Laravel 12",
+*      @OA\Contact(
+ *          email="kmisigaro@outlook.com"
+ *      ),
+ * )
+ */
 class AuthController extends Controller
 {
+     /**
+     * @OA\Get(
+     *      path="/api/login",
+     *      operationId="login",
+     *      tags={"Login"},
+     *      summary="Login User",
+     *      description="Returns example data",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"
+     *      )
+     * )
+     */
     public function login(Request $request){
 
         $checkIfUserExists = User::where('email', $request->email)->exists();
