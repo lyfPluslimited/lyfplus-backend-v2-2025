@@ -3,12 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     protected $table = 'careusers';
 
@@ -32,7 +34,7 @@ class User extends Authenticatable
     }
 
     public function selcomOrder(){
-        return $this->hasOne(SelcomPayment::class);
+        return $this->hasOne(SelcomModel::class);
     }
 
     public function posts(){
