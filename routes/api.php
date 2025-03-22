@@ -28,16 +28,16 @@ Route::get('test', function() {
     return 'test';
 });
 
-Route::group(['prefix' => 'register'], function () {
-    Route::post('user', [RegistrationController::class, 'createUser']);
-    Route::post('specialist', [RegistrationController::class, 'createSpecialist']);
-});
-
 Route::group(['prefix' => 'subscription'], function() {
     Route::post('subscribe', [ReferralController::class, 'subscribe']);
     Route::get('{userID}', [ReferralController::class, 'getSubscriptions']);
     Route::post('check', [ReferralController::class, 'doctorSubscription']);
     Route::get('/', [ReferralController::class, 'subscribers']);
+});
+
+Route::group(['prefix' => 'register'], function () {
+    Route::post('user', [RegistrationController::class, 'createUser']);
+    Route::post('specialist', [RegistrationController::class, 'createSpecialist']);
 });
 
 Route::group(['prefix' => 'update'], function() {
