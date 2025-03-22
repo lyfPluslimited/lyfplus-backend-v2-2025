@@ -19,7 +19,6 @@ use App\Http\Controllers\ForumController;
 use App\Http\Controllers\SecondForumController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\SubscriptionController;
-use L5Swagger\Http\Controllers\SwaggerController;
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
