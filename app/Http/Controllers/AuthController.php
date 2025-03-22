@@ -6,50 +6,35 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
-/**
- * @OA\Info(
- *      version="1.0.0",
- *      title="LyfPlus API Documentation",
- *      description="API documentation for Laravel 12",
- *      @OA\Contact(
- *          email="kmisigaro@outlook.com"
- *      ),
- * )
- */
 class AuthController extends Controller
 {
     /**
-     * @OA\Get(
-     *      path="/api/login",
-     *      operationId="login",
-     *      tags={"Login"},
-     *      summary="Login User",
-     *      description="Allows a user to log in using email and password. Returns a token upon successful login.",
-     *      @OA\Parameter(
-     *          name="email",
-     *          in="query",
-     *          required=true,
-     *          @OA\Schema(type="string", format="email")
-     *      ),
-     *      @OA\Parameter(
-     *          name="password",
-     *          in="query",
-     *          required=true,
-     *          @OA\Schema(type="string", format="password")
-     *      ),
-     *      @OA\Response(
-     *          response=200,
-     *          description="Successful login. Returns user data and token.",
-     *          @OA\JsonContent(
-     *              type="object",
-     *              @OA\Property(property="user", type="object", ref="#/components/schemas/User"),
-     *              @OA\Property(property="token", type="string")
-     *          )
-     *      ),
-     *      @OA\Response(
-     *          response=401,
-     *          description="Unauthorized. Incorrect password or user not found."
-     *      )
+     * @OA\Post(
+     *     path="/api/login",
+     *     summary="User Login",
+     *     operationId="loginNormally",
+     *     description="Authenticate a user by email and password",
+     *     tags={"Auth"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"email", "password"},
+     *             @OA\Property(property="email", type="string", format="email", example="user@example.com"),
+     *             @OA\Property(property="password", type="string", format="password", example="secret123")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="User authenticated successfully",
+
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized - Invalid credentials",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Password is incorrect or User not found")
+     *         )
+     *     )
      * )
      */
     public function login(Request $request)

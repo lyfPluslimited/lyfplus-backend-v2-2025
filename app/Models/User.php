@@ -7,7 +7,61 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use OpenApi\Annotations as OA;
 
+/**
+ * @OA\Schema(
+ *     schema="User",
+ *     title="User",
+ *     description="User model schema",
+ *     @OA\Property(property="userID", type="integer", example=352),
+ *     @OA\Property(property="firstName", type="string", example="Emmanuel"),
+ *     @OA\Property(property="lastName", type="string", example="Sanga"),
+ *     @OA\Property(property="dateOfBirth", type="string", format="date", nullable=true),
+ *     @OA\Property(property="email", type="string", format="email", example="esanga530@gmail.com"),
+ *     @OA\Property(property="password", type="string", example="$2y$10$..."),
+ *     @OA\Property(property="phone", type="string", example="+255742559448"),
+ *     @OA\Property(property="gender", type="string", nullable=true),
+ *     @OA\Property(property="age", type="integer", nullable=true),
+ *     @OA\Property(property="regionID", type="integer", nullable=true),
+ *     @OA\Property(property="street", type="string", nullable=true),
+ *     @OA\Property(property="lat", type="number", format="float", nullable=true),
+ *     @OA\Property(property="longt", type="number", format="float", nullable=true),
+ *     @OA\Property(property="geo", type="string", nullable=true),
+ *     @OA\Property(property="timeSt", type="string", format="date-time", example="2024-11-26 22:21:43"),
+ *     @OA\Property(property="doctorsIDnumber", type="string", nullable=true),
+ *     @OA\Property(property="doctorsIDverificationStatus", type="string", example="Not Verified"),
+ *     @OA\Property(property="status", type="string", example="PENDING"),
+ *     @OA\Property(property="userRole", type="integer", example=1),
+ *     @OA\Property(property="userNhifNumber", type="string", nullable=true),
+ *     @OA\Property(property="onlineStatus", type="integer", example=0),
+ *     @OA\Property(property="specializationID", type="integer", nullable=true),
+ *     @OA\Property(property="lastOnlineTime", type="string", format="date-time", example="2024-11-26 19:21:43"),
+ *     @OA\Property(property="user_image", type="string", format="uri", example="https://lyfplus.com/lyfPlus/images/profile/doctor.jpg"),
+ *     @OA\Property(property="height", type="number", format="float", nullable=true),
+ *     @OA\Property(property="weight", type="number", format="float", nullable=true),
+ *     @OA\Property(property="blood_group", type="string", nullable=true),
+ *     @OA\Property(property="doctorPromotionCode", type="string", nullable=true),
+ *     @OA\Property(property="userPromotionCode", type="string", nullable=true),
+ *     @OA\Property(property="allergy", type="string", nullable=true),
+ *     @OA\Property(property="doctor_bio", type="string", nullable=true),
+ *     @OA\Property(property="specilizationAreaID", type="integer", nullable=true),
+ *     @OA\Property(property="experience", type="string", nullable=true),
+ *     @OA\Property(property="consultation_fee", type="integer", example=0),
+ *     @OA\Property(property="call_fee", type="number", format="float", nullable=true),
+ *     @OA\Property(property="no_initial_consultation", type="string", example="0"),
+ *     @OA\Property(property="no_remain_consulatation", type="integer", nullable=true),
+ *     @OA\Property(property="consultation_availabiliy", type="string", example="OFF"),
+ *     @OA\Property(property="phone_availability", type="string", example="OFF"),
+ *     @OA\Property(property="patient_no", type="integer", nullable=true),
+ *     @OA\Property(property="registration_source", type="string", example="mobile"),
+ *     @OA\Property(property="ip_address", type="string", format="ipv4", example="197.250.96.211"),
+ *     @OA\Property(property="deleted", type="integer", example=0),
+ *     @OA\Property(property="country", type="string", example="Tanzania"),
+ *     @OA\Property(property="currency", type="string", example="TZS"),
+ *     @OA\Property(property="rate", type="number", format="float", example=0.00043)
+ * )
+ */
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;

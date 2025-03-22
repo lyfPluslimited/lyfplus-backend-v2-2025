@@ -6,16 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Chat;
 
-/**
- * @OA\Info(
- *      version="1.0.0",
- *      title="LyfPlus Chat API Documentation",
- *      description="API documentation for managing chat sessions",
- *      @OA\Contact(
- *          email="kmisigaro@outlook.com"
- *      ),
- * )
- */
 class ChatController extends Controller
 {
     /**

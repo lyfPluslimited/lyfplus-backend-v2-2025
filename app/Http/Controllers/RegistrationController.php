@@ -117,7 +117,7 @@ class RegistrationController extends Controller
 
         if ($phoneValidator->fails()) {
             //error
-            session()->flash('error','These credentials are already associated with another account, please use a different phone number and email to sign up');
+            // session()->flash('error','These credentials are already associated with another account, please use a different phone number and email to sign up');
             return \redirect()->back();
         }
 
@@ -131,13 +131,13 @@ class RegistrationController extends Controller
 
         if ($validator->fails()) {
             //error
-            session()->flash('error', 'Please enter all details');
+            // session()->flash('error', 'Please enter all details');
             return redirect()->back();
         }
 
         if($request->password != $request->passwordConfirm){
             //error
-            session()->flash('error', 'Passwords do not match');
+            // session()->flash('error', 'Passwords do not match');
             return redirect()->back();
         }
 

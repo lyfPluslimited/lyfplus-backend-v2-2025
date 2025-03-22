@@ -230,7 +230,7 @@ Route::get('forumBasedOffUser/{id}', [SecondForumController::class, 'getForumBas
 Route::group(['prefix' => 'forum'], function() {
     Route::get('/', [ForumController::class, 'getAllForums']);
     Route::get('/docroom', [ForumController::class, 'getDoctorRoomForum']);
-    Route::post('save', [ForumController::class, 'createForumPost']);
+    Route::post('/save', [ForumController::class, 'createForumPost']);
     //forum routes
     Route::get('generate-slugs', [ForumController::class, 'slugGenerator']);
     //display post to site
