@@ -16,6 +16,17 @@ use Illuminate\Routing\Controller as BaseController;
  *          email="kmisigaro@outlook.com"
  *      ),
  * )
+ *
+ * @OA\Schema(
+ *     schema="User",
+ *     required={"id", "name", "email", "phone"},
+ *     @OA\Property(property="id", type="integer", format="int64"),
+ *     @OA\Property(property="name", type="string"),
+ *     @OA\Property(property="email", type="string", format="email"),
+ *     @OA\Property(property="phone", type="string"),
+ *     @OA\Property(property="created_at", type="string", format="date-time"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time")
+ * )
  */
 
 class Controller extends BaseController

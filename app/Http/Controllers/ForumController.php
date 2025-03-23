@@ -16,6 +16,38 @@ use Illuminate\Support\Facades\DB;
 
 class ForumController extends Controller
 {
+
+    /**
+     * @OA\Get(
+     *     path="/api/forums",
+     *     operationId="getAllForums",
+     *     tags={"Forums"},
+     *     summary="Get all forums",
+     *     description="Retrieves a list of all available forums",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(
+     *                 type="object",
+     *                 @OA\Property(property="id", type="integer"),
+     *                 @OA\Property(property="title", type="string"),
+     *                 @OA\Property(property="description", type="string"),
+     *                 @OA\Property(property="created_at", type="string", format="date-time"),
+     *                 @OA\Property(property="updated_at", type="string", format="date-time")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="No forums found",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="No forums found")
+     *         )
+     *     )
+     * )
+     */
     public function getAllForums(){
 
         $posts = DB::table('userpost AS p')->join('careusers AS u', 'u.userID', '=', 'p.userID')
@@ -29,8 +61,8 @@ class ForumController extends Controller
                         'p.description as description',
                         'p.slug as slug',
                         'p.userPrivacy as privacy',
-                        'p.post_image as image', 
-                        DB::raw('COUNT(DISTINCT c.postCommentID) as commentsCount'), 
+                        'p.post_image as image',
+                        DB::raw('COUNT(DISTINCT c.postCommentID) as commentsCount'),
                         DB::raw('COUNT(DISTINCT l.postlikeID) as likesCount'),
                         DB::raw('CONCAT(u.firstName," ", u.lastName) AS author'),
                         'p.category as category',
@@ -82,7 +114,7 @@ class ForumController extends Controller
             $forum->post_image =  "http://167.172.12.18/app/public/images/forumImages/".$filename;
 
             if($forum->save()){
-                
+
                 $incentiveController = new IncentiveController();
                 $incentiveController->postSharing($request->user_id);
 
@@ -97,7 +129,7 @@ class ForumController extends Controller
             }
 
             return response()->json('Post failed to be saved', 400);
-            
+
         }
             $forum  = new Forum;
             $forum->userID = $request->user_id;
@@ -134,8 +166,8 @@ class ForumController extends Controller
                         'p.title as title',
                         'p.description as description',
                         'p.slug as slug','p.userPrivacy as privacy',
-                        'p.post_image as image', 
-                        DB::raw('COUNT(DISTINCT c.postCommentID) as commentsCount'), 
+                        'p.post_image as image',
+                        DB::raw('COUNT(DISTINCT c.postCommentID) as commentsCount'),
                         DB::raw('COUNT(DISTINCT l.postlikeID) as likesCount'),
                         DB::raw('CONCAT(u.firstName," ", u.lastName) AS author'),
                         'p.category as category',
@@ -245,7 +277,7 @@ class ForumController extends Controller
             'userPostID' => $request->post_id,
             'timePosted' => date("Y-m-d H:i:s")
         ]);
-        
+
         return response()->json('Comment made successfully', 201);
     }
 }

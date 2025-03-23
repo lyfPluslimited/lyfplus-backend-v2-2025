@@ -14,7 +14,7 @@ class AuthController extends Controller
      *     summary="User Login",
      *     operationId="loginNormally",
      *     description="Authenticate a user by email and password",
-     *     tags={"Auth"},
+     *     tags={"Authentication"},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -55,30 +55,25 @@ class AuthController extends Controller
     }
 
     /**
-     * @OA\Get(
-     *      path="/api/login/phone",
+     * @OA\Post(
+     *      path="/api/auth/login/phone",
      *      operationId="loginWithPhone",
-     *      tags={"Login"},
-     *      summary="Login User with Phone Number",
-     *      description="Allows a user to log in using their phone number and password.",
-     *      @OA\Parameter(
-     *          name="phone",
-     *          in="query",
+     *      tags={"Authentication"},
+     *      summary="Login user with phone number",
+     *      description="Authenticate user using phone number and password",
+     *      @OA\RequestBody(
      *          required=true,
-     *          @OA\Schema(type="string", format="phone")
-     *      ),
-     *      @OA\Parameter(
-     *          name="password",
-     *          in="query",
-     *          required=true,
-     *          @OA\Schema(type="string", format="password")
+     *          @OA\JsonContent(
+     *              required={"phone","password"},
+     *              @OA\Property(property="phone", type="string"),
+     *              @OA\Property(property="password", type="string", format="password")
+     *          )
      *      ),
      *      @OA\Response(
      *          response=200,
-     *          description="Successful login. Returns user data.",
+     *          description="Successful login",
      *          @OA\JsonContent(
-     *              type="object",
-     *              @OA\Property(property="user", type="object", ref="#/components/schemas/User")
+     *              @OA\Property(property="user", ref="#/components/schemas/User")
      *          )
      *      ),
      *      @OA\Response(

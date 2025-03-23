@@ -10,25 +10,402 @@
     },
     "paths": {
         "/api/login": {
-            "get": {
+            "post": {
                 "tags": [
-                    "Login"
+                    "Authentication"
                 ],
-                "summary": "Login User",
-                "description": "Returns example data",
-                "operationId": "login",
+                "summary": "User Login",
+                "description": "Authenticate a user by email and password",
+                "operationId": "loginNormally",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "secret123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
-                        "description": "Successful operation"
+                        "description": "User authenticated successfully"
+                    },
+                    "401": {
+                        "description": "Unauthorized - Invalid credentials",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Password is incorrect or User not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/login/phone": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Login user with phone number",
+                "description": "Authenticate user using phone number and password",
+                "operationId": "loginWithPhone",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "phone",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "phone": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful login",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "$ref": "#/components/schemas/User"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized. Incorrect password or user not found."
+                    }
+                }
+            }
+        },
+        "/api/doctor/{doctorID}": {
+            "get": {
+                "tags": [
+                    "Doctor"
+                ],
+                "summary": "Get Doctor Information",
+                "description": "Fetches details of a doctor by their user ID.",
+                "operationId": "getDoctor",
+                "parameters": [
+                    {
+                        "name": "doctorID",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation. Returns doctor details.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "$ref": "#/components/schemas/User"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Doctor not found."
+                    }
+                }
+            }
+        },
+        "/api/send-image": {
+            "post": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Upload an image for chat",
+                "description": "Uploads an image and returns its URL.",
+                "operationId": "saveImage",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "image": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Image uploaded successfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "imageUrl": {
+                                            "type": "string"
+                                        },
+                                        "status": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid file upload or no image sent."
+                    }
+                }
+            }
+        },
+        "/api/chat/store": {
+            "post": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Store a chat session",
+                "description": "Creates or updates a chat session.",
+                "operationId": "storeChat",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "patientID",
+                                    "specialistID"
+                                ],
+                                "properties": {
+                                    "patientID": {
+                                        "type": "integer"
+                                    },
+                                    "specialistID": {
+                                        "type": "integer"
+                                    },
+                                    "initiationTime": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Chat saved successfully."
+                    },
+                    "400": {
+                        "description": "Missing required details."
+                    }
+                }
+            }
+        },
+        "/api/chat/updateSessionTime": {
+            "put": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Update chat session initiation time",
+                "description": "Updates the initiation time of an existing chat session.",
+                "operationId": "updateSessionTime",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "patientID",
+                                    "specialistID",
+                                    "initiationTime"
+                                ],
+                                "properties": {
+                                    "patientID": {
+                                        "type": "integer"
+                                    },
+                                    "specialistID": {
+                                        "type": "integer"
+                                    },
+                                    "initiationTime": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Initiation time updated successfully."
+                    }
+                }
+            }
+        },
+        "/api/chat/getDoctorChatHistory/{id}": {
+            "get": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Retrieve doctor's chat history",
+                "description": "Fetches all chat sessions for a specific doctor.",
+                "operationId": "getDoctorChatHistory",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Chat history retrieved successfully."
+                    }
+                }
+            }
+        },
+        "/api/chat/endSession": {
+            "post": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "End a chat session",
+                "description": "Marks a chat session as inactive.",
+                "operationId": "endSession",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "patientID",
+                                    "specialistID"
+                                ],
+                                "properties": {
+                                    "patientID": {
+                                        "type": "integer"
+                                    },
+                                    "specialistID": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Session ended successfully."
                     }
                 }
             }
         }
     },
+    "components": {
+        "schemas": {
+            "User": {
+                "required": [
+                    "id",
+                    "name",
+                    "email",
+                    "phone"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "phone": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
     "tags": [
         {
-            "name": "Login",
-            "description": "Login"
+            "name": "Authentication",
+            "description": "Authentication"
+        },
+        {
+            "name": "Doctor",
+            "description": "Doctor"
+        },
+        {
+            "name": "Chat",
+            "description": "Chat"
         }
     ]
 }
