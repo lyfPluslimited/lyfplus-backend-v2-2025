@@ -35,6 +35,8 @@ Route::group(['prefix' => 'subscription'], function() {
     Route::get('/', [ReferralController::class, 'subscribers']);
 });
 
+Route::post('loginWithPhone', [AuthController::class, 'loginWithPhone']);
+
 Route::group(['prefix' => 'register'], function () {
     Route::post('user', [RegistrationController::class, 'createUser']);
     Route::post('specialist', [RegistrationController::class, 'createSpecialist']);

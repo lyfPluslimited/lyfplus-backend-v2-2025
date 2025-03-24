@@ -16,38 +16,45 @@ use Illuminate\Support\Facades\DB;
 
 class ForumController extends Controller
 {
-
-    /**
-     * @OA\Get(
-     *     path="/api/forums",
-     *     operationId="getAllForums",
-     *     tags={"Forums"},
-     *     summary="Get all forums",
-     *     description="Retrieves a list of all available forums",
-     *     @OA\Response(
-     *         response=200,
-     *         description="Successful operation",
-     *         @OA\JsonContent(
-     *             type="array",
-     *             @OA\Items(
-     *                 type="object",
-     *                 @OA\Property(property="id", type="integer"),
-     *                 @OA\Property(property="title", type="string"),
-     *                 @OA\Property(property="description", type="string"),
-     *                 @OA\Property(property="created_at", type="string", format="date-time"),
-     *                 @OA\Property(property="updated_at", type="string", format="date-time")
-     *             )
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="No forums found",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="No forums found")
-     *         )
-     *     )
-     * )
-     */
+ /**
+ * @OA\Get(
+ *     path="/api/forum",
+ *     operationId="getAllForums",
+ *     tags={"Forums"},
+ *     summary="Get all forums",
+ *     description="Retrieves a list of all available forums",
+ *     @OA\Response(
+ *         response=200,
+ *         description="Successful operation",
+ *         @OA\JsonContent(
+ *             type="array",
+ *             @OA\Items(
+ *                 @OA\Property(property="id", type="integer"),
+ *                 @OA\Property(property="title", type="string"),
+ *                 @OA\Property(property="description", type="string"),
+ *                 @OA\Property(property="slug", type="string"),
+ *                 @OA\Property(property="privacy", type="string"),
+ *                 @OA\Property(property="image", type="string"),
+ *                 @OA\Property(property="commentsCount", type="integer"),
+ *                 @OA\Property(property="likesCount", type="integer"),
+ *                 @OA\Property(property="author", type="string"),
+ *                 @OA\Property(property="category", type="string"),
+ *                 @OA\Property(property="user_image", type="string"),
+ *                 @OA\Property(property="role", type="string"),
+ *                 @OA\Property(property="userID", type="integer"),
+ *                 @OA\Property(property="date", type="string", format="date-time")
+ *             )
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=404,
+ *         description="No forums found",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string", example="No forums found")
+ *         )
+ *     )
+ * )
+ */
     public function getAllForums(){
 
         $posts = DB::table('userpost AS p')->join('careusers AS u', 'u.userID', '=', 'p.userID')
