@@ -192,7 +192,7 @@ Route::post('storeUserHistory', [UserHistoryController::class, 'storeUserHistory
 Route::get('getUserHistory/{userID}/{specialistID}', [UserHistoryController::class, 'getPatientSpecialistHistory']);
 
 Route::post('login', [AuthController::class, 'login']);
-Route::post('loginWithPhone', [AuthController::class, 'AuthController@loginWithPhone']);
+Route::post('loginWithPhone', [AuthController::class, 'loginWithPhone']);
 Route::post('send-image', [ChatController::class, 'saveImage']);
 
 Route::get('get-experience', [UserHistoryController::class, 'getExperiencePrices']);
