@@ -203,6 +203,7 @@ Route::post('unverify-specialist', [RegistrationController::class, 'unverify']);
 
 Route::post('register-patient', [RegistrationController::class, 'registerPatient']);
 
+
 Route::post('getID', [RegistrationController::class, 'getUserObject']);
 
 Route::post('getUserDetails', [RegistrationController::class, 'getUserDetails']);
