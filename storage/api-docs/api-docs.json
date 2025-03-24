@@ -66,7 +66,7 @@
                 }
             }
         },
-        "/api/auth/login/phone": {
+        "/api/loginWithPhone": {
             "post": {
                 "tags": [
                     "Authentication"

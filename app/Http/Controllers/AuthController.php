@@ -56,7 +56,7 @@ class AuthController extends Controller
 
     /**
      * @OA\Post(
-     *      path="/api/auth/login/phone",
+     *      path="/api/loginWithPhone",
      *      operationId="loginWithPhone",
      *      tags={"Authentication"},
      *      summary="Login user with phone number",

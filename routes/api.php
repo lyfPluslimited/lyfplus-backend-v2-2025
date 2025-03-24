@@ -194,7 +194,7 @@ Route::post('storeUserHistory', [UserHistoryController::class, 'storeUserHistory
 Route::get('getUserHistory/{userID}/{specialistID}', [UserHistoryController::class, 'getPatientSpecialistHistory']);
 
 Route::post('login', [AuthController::class, 'login']);
-
+Route::post('loginWithPhone', [AuthController::class, 'loginWithPhone']);
 Route::post('send-image', [ChatController::class, 'saveImage']);
 
 Route::get('get-experience', [UserHistoryController::class, 'getExperiencePrices']);
@@ -204,6 +204,7 @@ Route::post('verify-specialist', [RegistrationController::class, 'verification']
 Route::post('unverify-specialist', [RegistrationController::class, 'unverify']);
 
 Route::post('register-patient', [RegistrationController::class, 'registerPatient']);
+
 
 Route::post('getID', [RegistrationController::class, 'getUserObject']);
 
