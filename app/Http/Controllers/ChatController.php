@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Chat;
+use Carbon\Carbon;
 
 class ChatController extends Controller
 {
@@ -77,7 +78,7 @@ class ChatController extends Controller
         }
         Chat::updateOrCreate(
             ['patient_id' =>  $request->patientID, 'specialist_id' => $request->specialistID],
-            ['initiation_time' => $request->initiationTime]
+            ['initiation_time' => Carbon::parse($request->initiationTime)->format('Y-m-d H:i:s.u')]
         );
         return response()->json('Chat saved', 200);
     }
