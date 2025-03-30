@@ -106,7 +106,7 @@ class RegistrationController extends Controller
 
     public function createUserFromInvitation(Request $request){
         date_default_timezone_set('Africa/Dar_es_Salaam');
-        
+
         $factory = (new Factory)->withServiceAccount(__DIR__.'/LyfplusFirebase.json');
         $database = $factory->createDatabase();
         $auth = $factory->createAuth();
@@ -161,7 +161,7 @@ class RegistrationController extends Controller
         $user->userRole = 1;
         $user->timeSt = date("Y-m-d H:i:s");
         $user->deleted = false;
-        
+
         if($user->save()){
 
             $uniqueID = 'LyfPlusU'.$user->lastName.rand(10,20000).$user->userID;
@@ -173,9 +173,9 @@ class RegistrationController extends Controller
                 'password' => $user->password,
                 'uid' => (string)$user->userID
             ];
-            
+
             $createdUser = $auth->createUser($userProperties);
-            
+
             $ref = $database->getReference("client/$user->userID")->set([
                 "email" => $user->email,
                 "firstName" => $user->firstName,
@@ -184,7 +184,7 @@ class RegistrationController extends Controller
                 "uid" => (string)$user->userID,
                 "uuid" => (string)$user->userID
                ]);
-           
+
                return view('successfulUserRegistrationPage');
         }
 
@@ -201,7 +201,7 @@ class RegistrationController extends Controller
         date_default_timezone_set('Africa/Dar_es_Salaam');
 
         $phoneValidator = Validator::make($request->all(), [
-            'phone' => 'unique:App\User,phone',
+            'phone' => 'required|unique:careusers,phone',
         ]);
 
         if ($phoneValidator->fails()) {
@@ -211,14 +211,14 @@ class RegistrationController extends Controller
         }
 
         $emailValidator= Validator::make($request->all(), [
-            'email' => 'unique:App\User,email'
+            'email' => 'required|unique:careusers,email'
         ]);
 
         if ($emailValidator->fails()) {
             //error
             return response()->json(['message' => 'These credentials are already associated with another account, please use a different phone number and email to sign up', 'status' => 422], 422);
         }
-        
+
         $validator = Validator::make($request->all(), [
             'firstname' => 'required',
             'lastname' => 'required',
@@ -235,7 +235,11 @@ class RegistrationController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['status' => 400, 'message' => 'Input validation failed' ], 400);
+            return response()->json([
+                'status' => 400,
+                'message' => 'Input validation failed',
+                'errors' => $validator->errors()
+            ], 400);
         }
 
         $filename = time().'.'.$request->image->getClientOriginalExtension();
@@ -260,9 +264,9 @@ class RegistrationController extends Controller
         $specialist->onlineStatus = 1;
         $specialist->timeSt = date("Y-m-d H:i:s");
         $specialist->lat = $request->latitude;
-        $specialist->longt = $request->longitude; 
+        $specialist->longt = $request->longitude;
         $specialist->ip_address = $request->ip();
-        $specialist->user_image = 'http://lyfplus.co.tz/app/public/images/profilepic/'.$filename;
+        $specialist->user_image = $filename;
         $specialist->deleted = false;
 
         if($request->source){
@@ -270,7 +274,7 @@ class RegistrationController extends Controller
         } else {
             $specialist->registration_source = 'mobile';
         }
-        
+
        if($specialist->save()){
 
         $specialist->update([
@@ -281,23 +285,23 @@ class RegistrationController extends Controller
 
         ///
         ConsultationPayment::firstOrCreate([
-            'doctor_id' => $specialist->userID, 
+            'doctor_id' => $specialist->userID,
             'consultation_type' => 'call',
              'amount' => 10000,
             'gpay_id' => 'call'.'_'.ltrim($specialist->phone,'+').'_'.'fee'
         ]);
 
         ConsultationPayment::firstOrCreate([
-            'doctor_id' => $specialist->userID, 
+            'doctor_id' => $specialist->userID,
             'consultation_type' => 'chat',
              'amount' => 5000,
             'gpay_id' => 'consult'.'_'.ltrim($specialist->phone,'+').'_'.'fee'
         ]);
 
         SubscriptionPayment::firstOrCreate([
-            'doctor_id' => $specialist->userID, 
-            'subscription_period' => '1 month', 
-            'amount' => 100000, 
+            'doctor_id' => $specialist->userID,
+            'subscription_period' => '1 month',
+            'amount' => 100000,
             'gpay_id' => 'subscription'.'_'.ltrim($specialist->phone,'+').'_'.'fee'
         ]);
 
@@ -329,7 +333,7 @@ class RegistrationController extends Controller
 
     public function sendMessageSMS(Request $request){
         $phonenumber = ltrim($request->phone, '+');
-        
+
         (new \App\Models\FastHub)->sendSMS($phonenumber, $request->message);
     }
 
@@ -345,7 +349,7 @@ class RegistrationController extends Controller
 
         //firebase functions
         $ref = $database->getReference('specialist/'.$request->userID);
-        
+
         if($ref->update([
             'verification' => 'Verified',
             'consultation_fee' => 1000,
@@ -359,7 +363,7 @@ class RegistrationController extends Controller
                 'consultation_fee' => 1000,
                 'call_fee' => 1000,
             ]);
-                 
+
             $phonenumber = ltrim($doctor->phone, '+');
 
             $message = 'The LyfPlus team has reviewed and verified your information. Your account is now active, thank you for your interest to practice with us. Be sure to be conversant with our healthcare providers\’ terms and conditions and terms and conditions for consultation and prescription. For any enquiries please contact us through partnerdoctors@lyfplus.com or call +255745247261';
@@ -383,7 +387,7 @@ class RegistrationController extends Controller
         $database = $factory->createDatabase();
 
         $ref = $database->getReference('specialist/'.$request->userID);
-        
+
         if($ref->update([
             'verification' => 'Not Verified'
         ])){
@@ -403,10 +407,10 @@ class RegistrationController extends Controller
 
             return response()->json([
                 'message' => 'User unverified successfully',
-            ],200);  
-            
+            ],200);
+
         }
-        
+
         return response()->json([
                 'message' => 'User unverification failed',
                 'status' => 400
@@ -591,7 +595,7 @@ class RegistrationController extends Controller
 
         //check if client ID does exist
         if($checkIfClientExists){
-            
+
             //check if image is updated
             if($request->hasFile('profile')){
                 $filename = time().'.'.$request->profile->getClientOriginalExtension();
