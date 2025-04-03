@@ -749,7 +749,7 @@ class AdminController extends Controller
         $doctor = User::where('userID', $id)->first();
 
         $doctor->update([
-            'doctorsIDverificationStatus' => $doctor->doctorsIDverificationStatus == 'Verified' ? 'Not Verified',
+            'doctorsIDverificationStatus' => $doctor->doctorsIDverificationStatus == 'Verified' ? 'Not Verified' : 'Verified' ,
             'consultation_fee' => 1000,
             'call_fee' => 1000,
         ]);
