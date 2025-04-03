@@ -748,14 +748,14 @@ class AdminController extends Controller
     public function doctorVerification($id){
         $doctor = User::where('userID', $id)->first();
 
-        $user = User::where('userID', $id)->update([
+       User::where('userID', $id)->update([
             'doctorsIDverificationStatus' => $doctor->doctorsIDverificationStatus == 'Verified' ? 'Not Verified' : 'Verified' ,
             'consultation_fee' => 1000,
             'call_fee' => 1000,
         ]);
 
         return response()->json([
-            'message' => $user
+            'message' => $doctor
         ],200);
     }
 }
