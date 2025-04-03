@@ -171,6 +171,7 @@ Route::group(['prefix' => 'admin'], function() {
     Route::post('delete-doctor/{userID}', [AdminController::class, 'deleteDoctor']);
     Route::get('getDocs', [AdminController::class, 'getDoctors']);
     Route::patch('saveFee', [AdminController::class, 'saveDoctorFee']);
+    Route::get('verifydoc/{id}',[AdminController::class, 'doctorVerification']);
 
     //Patient Invitation routes
     Route::get('invitations', [InvitationController::class, 'index']);

@@ -744,4 +744,18 @@ class AdminController extends Controller
 
         return response()->json($message, 200);
     }
+
+    public function doctorVerification($id){
+        $doctor = User::where('userID', $id)->first();
+
+        $doctor->update([
+            'doctorsIDverificationStatus' => $doctor->doctorsIDverificationStatus == 'Verified' ? 'Not Verified',
+            'consultation_fee' => 1000,
+            'call_fee' => 1000,
+        ]);
+
+        return response()->json([
+            'message' => 'User verified successfully'
+        ],200);
+    }
 }
