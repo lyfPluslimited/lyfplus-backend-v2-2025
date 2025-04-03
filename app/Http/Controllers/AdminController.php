@@ -755,7 +755,7 @@ class AdminController extends Controller
         ]);
 
         return response()->json([
-            'message' => 'User verified successfully'
+            'message' => $doctor
         ],200);
     }
 }
