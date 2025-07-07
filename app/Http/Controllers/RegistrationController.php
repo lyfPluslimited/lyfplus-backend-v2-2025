@@ -17,12 +17,50 @@ use App\Http\Controllers\IncentiveController;
 class RegistrationController extends Controller
 {
 
+    /**
+     * @OA\Post(
+     *     path="/api/register/user",
+     *     summary="Create a new user",
+     *     operationId="createUser",
+     *     description="Registers a new user",
+     *     tags={"Registration"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"firstname", "lastname", "phone", "email", "password", "passwordConfirm", "country"},
+     *             @OA\Property(property="firstname", type="string", example="John"),
+     *             @OA\Property(property="lastname", type="string", example="Doe"),
+     *             @OA\Property(property="phone", type="string", example="255123456789"),
+     *             @OA\Property(property="email", type="string", format="email", example="john.doe@example.com"),
+     *             @OA\Property(property="password", type="string", format="password", example="secret123"),
+     *             @OA\Property(property="passwordConfirm", type="string", format="password", example="secret123"),
+     *             @OA\Property(property="country", type="string", example="Tanzania")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="User created successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="User created successfully")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Failed to create user")
+     *         )
+     *     )
+     * )
+     */
     public function createUser(Request $request){
 
         date_default_timezone_set('Africa/Dar_es_Salaam');
 
+
+
         $phoneValidator = Validator::make($request->all(), [
-            'phone' => 'unique:App\User,phone',
+            'phone' => 'unique:App\Models\User,phone',
         ]);
 
         if ($phoneValidator->fails()) {
@@ -31,7 +69,7 @@ class RegistrationController extends Controller
         }
 
         $emailValidator= Validator::make($request->all(), [
-            'email' => 'unique:App\User,email'
+            'email' => 'unique:App\Models\User,email'
         ]);
 
         if ($emailValidator->fails()) {
@@ -64,6 +102,8 @@ class RegistrationController extends Controller
         $user->timeSt = date("Y-m-d H:i:s");
         $user->deleted = false;
 
+
+
         switch($request->country){
             case "Tanzania":
                 $user->country = "Tanzania";
@@ -87,6 +127,8 @@ class RegistrationController extends Controller
         }
 
         $user->save();
+
+
 
         $uniqueID = 'LyfPlusU'.$request->lastname.rand(10,20000).$user->id;
 
