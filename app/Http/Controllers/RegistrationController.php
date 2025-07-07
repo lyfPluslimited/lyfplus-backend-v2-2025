@@ -78,22 +78,22 @@ class RegistrationController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'firstname' => 'required',
-            'lastname' => 'required',
+            'firstName' => 'required',
+            'lastName' => 'required',
             'phone' => 'required',
             'email' => 'required|email',
             'password' => 'required|min:7',
-            'passwordConfirm' => 'required|min:7',
-            'country' => 'required'
+           // 'passwordConfirm' => 'required|min:7',
+           // 'country' => 'required'
         ]);
 
         if ($validator->fails()) {
-            return response()->json('Failed to create user', 422);
+            return response()->json(['message' => 'Failed to create user', 'missing_parameters' => $validator->messages()], 422);
         }
 
         $user = new User;
-        $user->firstname = $request->firstname;
-        $user->lastname = $request->lastname;
+        $user->firstName = $request->firstName;
+        $user->lastName = $request->lastName;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
         $user->phone = $request->phone;
